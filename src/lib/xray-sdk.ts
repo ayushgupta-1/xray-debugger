@@ -66,15 +66,28 @@ export class XRaySDK {
       },
     };
 
+    // SYSTEM DESIGN IMPROVEMENT: Fire-and-Forget / Fail-Open
+    // We do NOT want to await this if we want zero-latency impact,
+    // but for this demo we await it to ensure the UI updates.
+    // However, we MUST wrap it in a try/catch that swallows errors.
     try {
+      const controller = new AbortController();
+      // Timeout after 2 seconds - don't hang the app if observability is slow
+      const id = setTimeout(() => controller.abort(), 2000);
+
       await fetch(this.apiEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
+        signal: controller.signal, // <--- Timeout protection
+        // keepalive: true // In a real browser SDK, use this to ensure delivery on page unload
       });
+
+      clearTimeout(id);
       console.log(`[X-Ray] Trace submitted: ${this.traceId}`);
     } catch (e) {
-      console.error("[X-Ray] Failed to submit trace", e);
+      // SILENT FAILURE: Never crash the user's app because the logger failed
+      console.warn("[X-Ray] Failed to submit trace (Fail-Open active)", e);
     }
   }
 }
