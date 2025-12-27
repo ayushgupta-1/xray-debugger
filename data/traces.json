@@ -1,0 +1,105 @@
+[
+  {
+    "traceId": "dfb9ebcb-f629-40f7-ae88-cddf17064c01",
+    "timestamp": 1766848375667,
+    "status": "success",
+    "steps": [
+      {
+        "name": "1. Candidate Search",
+        "input": {
+          "query": "Best water bottle",
+          "maxPrice": 50
+        },
+        "output": {
+          "count": 4
+        },
+        "reasoning": "Found 4 items matching keywords.",
+        "id": "609c8b24-dc85-42ab-9e70-453ffcc06774",
+        "timestamp": 1766848376168
+      },
+      {
+        "name": "2. Apply Filters",
+        "input": {
+          "filters": [
+            "price <= 50",
+            "rating > 4.0"
+          ]
+        },
+        "output": {
+          "survivors": [
+            "HydroFlask 32oz",
+            "Yeti Rambler"
+          ]
+        },
+        "reasoning": "Filtered down to 2 items based on business rules.",
+        "candidates": [
+          {
+            "id": "p1",
+            "name": "HydroFlask 32oz",
+            "data": {
+              "price": 45,
+              "rating": 4.5
+            },
+            "status": "selected",
+            "reason": ""
+          },
+          {
+            "id": "p2",
+            "name": "Cheap Bottle",
+            "data": {
+              "price": 8,
+              "rating": 3.2
+            },
+            "status": "rejected",
+            "reason": "Rating 3.2 is too low"
+          },
+          {
+            "id": "p3",
+            "name": "Yeti Rambler",
+            "data": {
+              "price": 35,
+              "rating": 4.8
+            },
+            "status": "selected",
+            "reason": ""
+          },
+          {
+            "id": "p4",
+            "name": "Gold Plated Bottle",
+            "data": {
+              "price": 150,
+              "rating": 5
+            },
+            "status": "rejected",
+            "reason": "Price $150 > $50"
+          }
+        ],
+        "id": "35e9f32c-b806-4ab2-9025-91d8b3c906d9",
+        "timestamp": 1766848376168
+      },
+      {
+        "name": "3. Final Selection",
+        "input": {
+          "candidates": [
+            "HydroFlask 32oz",
+            "Yeti Rambler"
+          ]
+        },
+        "output": {
+          "id": "p1",
+          "name": "HydroFlask 32oz",
+          "price": 45,
+          "rating": 4.5,
+          "reviews": 9000
+        },
+        "reasoning": "Selected HydroFlask 32oz because it had the highest review count.",
+        "id": "935c8be0-fb41-4699-afad-bddd7f3b552b",
+        "timestamp": 1766848376168
+      }
+    ],
+    "meta": {
+      "duration": 502,
+      "environment": "development"
+    }
+  }
+]
