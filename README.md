@@ -24,7 +24,7 @@ I chose a **Next.js Monorepo** approach to simulate a realistic production envir
 
 ## 💾 Storage Engine Decision (System Design)
 
-Instead of a naive JSON Array (which incurs an O(N) read/write penalty), I implemented an **Append-Only Log (JSONL)** architecture.
+Instead of a native JSON Array (which incurs an O(N) read/write penalty), I implemented an **Append-Only Log (JSONL)** architecture.
 
 - **Write Performance:** Writes are **O(1)**. The ingestion API simply appends a new line to `traces.jsonl`. This mimics the behavior of high-throughput systems like **Kafka** or **Database Write-Ahead Logs (WAL)**.
 - **Simplicity:** Zero external dependencies (no Docker, no SQL drivers) required for the demo.
@@ -32,7 +32,7 @@ Instead of a naive JSON Array (which incurs an O(N) read/write penalty), I imple
 
 ## 🛡️ Reliability & Scale Improvements
 
-Even for this MVP, I implemented core reliability patterns:
+Even for this POC, I implemented core reliability patterns:
 
 1. **Fail-Open SDK:** The SDK implements a "Fail-Open" design with a 2-second timeout circuit breaker. If the observability ingestion service is down or slow, the main application proceeds without crashing or hanging.
 2. **Read/Write Separation:** The write path (Ingestion) is optimized for speed (Append-Only). The read path (Dashboard) handles the parsing and slicing (reading last 50 items), ensuring the collector never bottlenecks.
